@@ -33,7 +33,7 @@ public class LoginServlet extends HttpServlet {
             try {
                 // 查询数据库
                 User user = userDao.queryUser(username, password);
-                if (user.getId() > 0) {
+                if (user.getId()!= null && user.getId() > 0) {
                     // 查到用户了，也就是用户名和密码是正确
                     success = 1;
                     // 将用户信息存放到 session
