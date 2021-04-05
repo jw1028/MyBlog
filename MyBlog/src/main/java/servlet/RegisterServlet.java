@@ -25,8 +25,9 @@ public class RegisterServlet extends HttpServlet {
         // 1.获取请求的参数
         String username = req.getParameter("username");
         String password = req.getParameter("password");
-
-            // todo:非空效验 [msg="参数不全"]
+        if (username != null && !username.equals("") &&
+                password != null && !password.equals("")
+        ) {
             // 2.【业务逻辑处理】操作数据库添加用户
             UserDao userDao = new UserDao();
             try {
@@ -34,16 +35,15 @@ public class RegisterServlet extends HttpServlet {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            // 3.返回结果
-            HashMap<String, Object> result = new HashMap<String, Object>();
-            result.put("success", success);
-            result.put("msg", msg);
-            JSONUtil.write(resp, result);
-//        // 3.返回结果
-//        PrintWriter writer = resp.getWriter();
-//        // {"success":1,"msg":"msg"}
-//        writer.println(String.format("{\"success\":%d,\"msg\":\"%s\"}",success,msg));
-
+        }else {
+            success = 0;
+            msg = "参数不全，无法注册成功";
+        }
+        // 3.返回结果
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        result.put("success", success);
+        result.put("msg", msg);
+        JSONUtil.write(resp, result);
     }
 
     @Override
