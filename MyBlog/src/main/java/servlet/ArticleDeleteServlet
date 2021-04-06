@@ -1,0 +1,59 @@
+package servlet;
+
+import dao.ArticleDao;
+import util.JSONUtil;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+
+/**
+ * Created with Intellig IDEA
+ * Description:
+ * User: zjc
+ * Date: 2021- 04 -05
+ * Time: 19:18
+ */
+@WebServlet("/articleDelete")
+public class ArticleDeleteServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int success = -1;
+        String msg = "";
+        // 1.获取前端参数
+        Integer id = Integer.parseInt(req.getParameter("id"));
+        if (id > 0) {
+            // 参数有效
+            // 2.业务处理【调用数据库进行删除】
+            ArticleDao articleDao = new ArticleDao();
+            try {
+                // 调用数据库删除数据方法
+                int ret = articleDao.delArticle(id);
+                if (ret >= 0) {
+                    // 删除成功
+                    success = 1;
+                }
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        } else {
+            // 参数无效
+            msg = "参数无效";
+        }
+        // 3.将结果返回给前端
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        result.put("success", success);
+        result.put("msg", msg);
+        JSONUtil.serialize(resp, result);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req,resp);
+    }
+}
