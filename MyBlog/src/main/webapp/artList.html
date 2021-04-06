@@ -5,36 +5,53 @@
     <title>我的文章列表</title>
     <script src="jquery/jquery-1.9.1.min.js"></script>
     <script>
+        // 文章删除操作
+        function del(id) {
+            if (confirm("确定删除？")) {
+                // 请求后端接口删除响应的数据
+                jQuery.getJSON("articleDelete", {"id": id}, function (data) {
+                    if (data != null && data.success == 1) {
+                        alert("恭喜：操作成功！");
+                        // 刷新当前页面
+                        location.href = location.href;
+                    } else {
+                        alert("抱歉：操作失败！" + data.msg);
+                    }
+                });
+            }
+        }
+
         jQuery(function () {
             // 当页面加载完成之后在执行此方法
 
             // 1.去后台查询我的文章列表
-            jQuery.getJSON("article", {}, function (data) {
+            jQuery.getJSON("articleList", {}, function (data) {
                 // 2.将 table 信息进行替换（替换成后台数据）
                 if (data != null && data.success == 1) {
                     // 查询成功，动态拼接 table
                     var html = "";
                     for (var i = 0; i < data.list.length; i++) {
                         var article = data.list[i];
-                        html += " <tr>\n" +
+                        html += "<tr>\n" +
                             "            <td>\n" +
-                            article.id + "                \n" +
+                            article.id + "\n" +
                             "            </td>\n" +
                             "            <td>\n" +
-                            article.title + "                \n" +
+                            article.title + "\n" +
                             "            </td>\n" +
                             "            <td>\n" +
                             article.createTime + "                \n" +
                             "            </td>\n" +
                             "            <td>\n" +
-                            article.readCount + "                \n" +
+                            article.rcount + "                \n" +
                             "            </td>\n" +
                             "            <td>\n" +
-                            "                修改 删除\n" +
+                            "                <a href='modifiyArticle.html?id=" + article.id
+                            + "'>修改</a> <a href='javascript:del(" + article.id + ");'>删除</a>\n" +
                             "            </td>\n" +
                             "        </tr>";
                     }
-                    jQuery("#tab1").append(html);
+                    jQuery("#tab").append(html);
                 } else {
                     alert("操作失败：" + data.msg);
                 }
@@ -45,7 +62,9 @@
 <body>
 <div style="margin-top: 50px;text-align: center;">
     <h1>我的文章列表</h1>
-    <table id="tab1" style="width: 80%;margin-left: 100px;" border="1">
+    <a href="addArticle.html">添加文章</a>
+    <hr>
+    <table id="tab" style="width: 80%;margin-left: 100px;" border="1">
         <tr>
             <td>
                 编号
@@ -63,7 +82,6 @@
                 操作
             </td>
         </tr>
-
     </table>
 </div>
 </body>
