@@ -1,0 +1,51 @@
+package servlet;
+
+import dao.ArticleDao;
+import model.Article;
+import util.JSONUtil;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+
+/**
+ * 初始化列表操作
+ */
+@WebServlet("/articleInit")
+public class ArticleInitServlet extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int success = -1;
+        String msg = "";
+        Article art = null;
+        int id = Integer.parseInt(req.getParameter("id"));
+        if (id > 0) {
+            ArticleDao articleDao = new ArticleDao();
+            // 执行数据库查询
+            try {
+                art = articleDao.queryArticle(id);
+                success = 1;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        } else {
+            msg = "参数有误！";
+        }
+        // 3.返回结果给前端
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        result.put("success", success);
+        result.put("msg", msg);
+        result.put("art", art);
+        JSONUtil.serialize(resp,result);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req,resp);
+    }
+}
