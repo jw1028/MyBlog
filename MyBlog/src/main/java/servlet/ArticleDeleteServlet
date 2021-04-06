@@ -13,11 +13,7 @@ import java.sql.SQLException;
 import java.util.HashMap;
 
 /**
- * Created with Intellig IDEA
- * Description:
- * User: zjc
- * Date: 2021- 04 -05
- * Time: 19:18
+ * 删除文章
  */
 @WebServlet("/articleDelete")
 public class ArticleDeleteServlet extends HttpServlet {
