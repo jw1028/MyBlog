@@ -1,4 +1,5 @@
 package servlet;
+package servlet;
 
 import dao.ArticleDao;
 import model.Article;
@@ -22,13 +23,13 @@ public class ArticleInitServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int success = -1;
         String msg = "";
-        Article art = null;
+        Article article = null;
         int id = Integer.parseInt(req.getParameter("id"));
         if (id > 0) {
             ArticleDao articleDao = new ArticleDao();
             // 执行数据库查询
             try {
-                art = articleDao.queryArticle(id);
+                article = articleDao.getArticleById(id);
                 success = 1;
             } catch (SQLException throwables) {
                 throwables.printStackTrace();
@@ -36,11 +37,10 @@ public class ArticleInitServlet extends HttpServlet {
         } else {
             msg = "参数有误！";
         }
-        // 3.返回结果给前端
         HashMap<String, Object> result = new HashMap<String, Object>();
         result.put("success", success);
         result.put("msg", msg);
-        result.put("art", art);
+        result.put("article", article);
         JSONUtil.serialize(resp,result);
     }
 
