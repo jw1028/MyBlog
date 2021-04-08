@@ -1,0 +1,44 @@
+package servlet;
+
+
+import dao.ArticleDao;
+import util.JSONUtil;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.sql.SQLException;
+import java.util.HashMap;
+
+@WebServlet("/readCountAdd")
+public class ReadCountAdd extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        int success = -1;
+        String msg = "";
+        int id = Integer.parseInt(req.getParameter("id"));
+        if (id > 0) {
+            ArticleDao articleDao = new ArticleDao();
+            try {
+                success = articleDao.readCountAdd(id);
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        } else {
+            // 非法参数
+            msg = "非法参数";
+        }
+        HashMap<String, Object> result = new HashMap<String, Object>();
+        result.put("success", success);
+        result.put("msg", msg);
+        JSONUtil.serialize(resp,result);
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        this.doGet(req,resp);
+    }
+}
