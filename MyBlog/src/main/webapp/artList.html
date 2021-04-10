@@ -21,6 +21,17 @@
             }
         }
 
+        // 时间格式化
+        function datefm(timespan) {
+            var date = new Date(timespan);
+            // 获得年份
+            var y = date.getFullYear();
+            // 获得月份【注意+1】
+            var m = date.getMonth() + 1;
+            // 获得日期
+            var d = date.getDate();
+            return y + "-" + m + "-" + d;
+        }
         jQuery(function () {
             // 当页面加载完成之后在执行此方法
 
@@ -43,7 +54,7 @@
                             article.createTime + "                \n" +
                             "            </td>\n" +
                             "            <td>\n" +
-                            article.rcount + "                \n" +
+                            article.readCount + "                \n" +
                             "            </td>\n" +
                             "            <td>\n" +
                             "                <a href='modifiyArticle.html?id=" + article.id
@@ -65,23 +76,23 @@
     <a href="addArticle.html">添加文章</a>
     <hr>
     <table id="tab" style="width: 80%;margin-left: 100px;" border="1">
-        <tr>
-            <td>
-                编号
-            </td>
-            <td>
-                标题
-            </td>
-            <td>
-                发布时间
-            </td>
-            <td>
-                阅读数
-            </td>
-            <td>
-                操作
-            </td>
-        </tr>
+<tr>
+    <td>
+        编号
+    </td>
+    <td>
+        标题
+    </td>
+    <td>
+        发布时间
+    </td>
+    <td>
+        阅读数
+    </td>
+    <td>
+        操作
+    </td>
+</tr>
     </table>
 </div>
 </body>
