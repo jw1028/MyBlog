@@ -17,7 +17,7 @@
             // 2.查询数据库信息并展示
             jQuery.getJSON("articleInit", {"id": id}, function (data) {
                 if (data != null && data.success == 1) {
-                    var art = data.art;
+                    var art = data.article;
                     jQuery("#title").val(art.title);
                     jQuery("#content").val(art.content);
                 } else {
